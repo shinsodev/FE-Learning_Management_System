@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { FaArrowRight } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 import Logo from "../../assets/images/logo.png";
-import GoogleImg from "../../assets/images/google.svg";
 
 // Component
 import Loading from "../../components/Loading/Loading";
@@ -16,15 +15,17 @@ import { resetPassword } from "../../services/AuthServices";
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await resetPassword(email, newPassword);
+      const response = await resetPassword(email, newPassword, confirmPassword);
 
       if (response?.data?.statusCode === 200) {
         toast.success(response.data.message);
@@ -62,7 +63,10 @@ const ResetPassword = () => {
           </p>
 
           {/* Form */}
-          <form className="flex flex-col gap-4 w-full" onSubmit={handleLogin}>
+          <form
+            className="flex flex-col gap-4 w-full"
+            onSubmit={handleResetPassword}
+          >
             <input
               className="p-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
               name="email"
@@ -76,7 +80,7 @@ const ResetPassword = () => {
             <div className="relative">
               <input
                 className="p-3 w-full border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
-                name="new-password"
+                name="newPassword"
                 type={showPassword ? "text" : "password"}
                 placeholder="New password"
                 value={newPassword}
@@ -88,6 +92,29 @@ const ResetPassword = () => {
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
+                  <AiFillEye size={20} />
+                ) : (
+                  <AiFillEyeInvisible size={20} />
+                )}
+              </div>
+            </div>
+
+            {/* CONFIRM PASSWORD  */}
+            <div className="relative">
+              <input
+                className="p-3 w-full border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm new password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <div
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
                   <AiFillEye size={20} />
                 ) : (
                   <AiFillEyeInvisible size={20} />

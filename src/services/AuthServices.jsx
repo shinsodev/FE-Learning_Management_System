@@ -38,11 +38,25 @@ export async function verifyOTP(email, otp) {
   }
 }
 
-export async function resetPassword(email, newPassword) {
+export async function resetPassword(email, newPassword, confirmPassword) {
   try {
     const res = await axios.post("/auth/reset-password", {
       email,
       newPassword,
+      confirmPassword,
+    });
+
+    return res;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+}
+
+export async function register(userDTO, studentDTO) {
+  try {
+    const res = await axios.post("/students/register", {
+      userDTO,
+      studentDTO,
     });
 
     return res;

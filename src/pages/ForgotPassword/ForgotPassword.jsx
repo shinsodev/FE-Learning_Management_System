@@ -7,7 +7,7 @@ import Logo from "../../assets/images/logo.png";
 import GoogleImg from "../../assets/images/google.svg";
 
 // Component
-import Loading from "../../components/Loading/Loading";
+// import Loading from "../../components/Loading/Loading";
 
 // API
 import { forgotPassword, verifyOTP } from "../../services/AuthServices";
@@ -52,12 +52,12 @@ const ForgotPassword = () => {
     }
   };
 
-  if (isLoading)
-    return (
-      <>
-        <Loading></Loading>
-      </>
-    );
+  // if (isLoading)
+  //   return (
+  //     <>
+  //       <Loading></Loading>
+  //     </>
+  //   );
 
   return (
     <div className="bg-gradient-to-br from-blue-100 to-blue-300 flex items-center justify-center h-screen px-4">

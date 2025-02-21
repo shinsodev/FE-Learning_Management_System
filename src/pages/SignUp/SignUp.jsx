@@ -1,22 +1,52 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { FaArrowRight } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-import Logo from "../../assets/images/logo.png";
+// import Logo from "../../assets/images/logo.png";
 import GoogleImg from "../../assets/images/google.svg";
 
 // Component
 import Loading from "../../components/Loading/Loading";
 
 // API
-import { login } from "../../services/AuthServices";
+import { register } from "../../services/AuthServices";
 
 const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // userDTO
+  // const [email, setEmail] = useState("");
+  // const [name, setName] = useState("");
+  // const [faculty, setFaculty] = useState("");
+  // const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const [formUserDTO, setFormUserDTO] = useState({
+    username: "",
+    name: "",
+    faculty: "",
+    password: "",
+  });
+
+  const handleChangeUserDTO = (e) => {
+    setFormUserDTO({ ...formUserDTO, [e.target.name]: e.target.value });
+  };
+
+  // studentDTO
+  // const [studentId, setStudentId] = useState("");
+  // const [enrolledCourse, setEnrolledCourse] = useState("");
+  // const [major, setMajor] = useState("");
+
+  const [formStudentDTO, setStudentDTO] = useState({
+    studentId: "",
+    enrolledCourse: "",
+    major: "",
+  });
+
+  const handleChangeStudentDTO = (e) => {
+    setStudentDTO({ ...formStudentDTO, [e.target.name]: e.target.value });
+  };
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -24,12 +54,11 @@ const SignUp = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await login(email, password);
+      const response = await register(formUserDTO, formStudentDTO);
 
       if (response?.data?.statusCode === 200) {
-        localStorage.setItem("token", response.data.token);
         toast.success(response.data.message);
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       console.error(error);
@@ -50,51 +79,82 @@ const SignUp = () => {
       <div className="bg-white shadow-2xl rounded-2xl w-full max-w-sm md:max-w-md p-8">
         <div className="flex flex-col items-center">
           {/* Logo */}
-          <div className="w-20 md:w-28 mb-4">
+          {/* <div className="w-20 md:w-28 mb-4">
             <img src={Logo} alt="Logo" />
-          </div>
+          </div> */}
 
           {/* Title */}
           <h1 className="text-2xl md:text-3xl font-secondary font-semibold text-blue-600 mb-2">
             Grade Portal Of HCMUT
           </h1>
           <p className="text-sm text-gray-600 mb-6">
-            Please enter email and password
+            Please enter your information
           </p>
 
           {/* Form */}
           <form className="flex flex-col gap-4 w-full" onSubmit={handleLogin}>
             <input
               className="p-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
-              name="email"
+              name="username"
               type="text"
               placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formUserDTO.username}
+              onChange={handleChangeUserDTO}
               required
             />
 
-            <div className="relative">
+            <input
+              className="p-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
+              name="name"
+              type="text"
+              placeholder="Name"
+              value={formUserDTO.name}
+              onChange={handleChangeUserDTO}
+              required
+            />
+
+            <div className="flex flex-row space-x-4">
               <input
-                className="p-3 w-full border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                className="p-3 border w-[100%] border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
+                name="faculty"
+                type="text"
+                placeholder="Faculty"
+                value={formUserDTO.faculty}
+                onChange={handleChangeUserDTO}
                 required
-                autoComplete="current-password"
               />
-              <div
-                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <AiFillEye size={20} />
-                ) : (
-                  <AiFillEyeInvisible size={20} />
-                )}
-              </div>
+
+              <input
+                className="p-3 border w-[100%] border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
+                name="major"
+                type="text"
+                placeholder="Major"
+                value={formStudentDTO.major}
+                onChange={handleChangeStudentDTO}
+                required
+              />
+            </div>
+
+            <div className="flex flex-row space-x-4">
+              <input
+                className="p-3 border w-[100%] border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
+                name="studentId"
+                type="number"
+                placeholder="Student ID"
+                value={formStudentDTO.studentId}
+                onChange={handleChangeStudentDTO}
+                required
+              />
+
+              <input
+                className="p-3 border w-[100%] border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
+                name="enrolledCourse"
+                type="number"
+                placeholder="Intake"
+                value={formStudentDTO.enrolledCourse}
+                onChange={handleChangeStudentDTO}
+                required
+              />
             </div>
 
             <div className="relative">
@@ -103,8 +163,8 @@ const SignUp = () => {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formUserDTO.password}
+                onChange={handleChangeUserDTO}
                 required
                 autoComplete="current-password"
               />
