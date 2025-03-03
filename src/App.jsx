@@ -16,6 +16,9 @@ import SignUp from "./pages/SignUp/SignUp";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
+// Admin
+import AdminAllClasses from "./pages/admin/AdminAllClasses";
+
 // Student
 import StudentCourses from "./pages/StudentCourses/StudentCourses";
 
@@ -40,7 +43,17 @@ function App() {
           }
         />
 
-        {/* Student route  */}
+        {/* Admin routes */}
+        <Route
+          path="/admin/all-classes"
+          element={
+            <SidebarLayout>
+              <AdminAllClasses />
+            </SidebarLayout>
+          }
+        />
+
+        {/* Student routes  */}
         <Route
           path="/student/my-courses"
           element={

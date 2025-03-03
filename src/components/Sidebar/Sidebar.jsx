@@ -32,6 +32,15 @@ const Sidebar = () => {
           <div>Dashboard</div>
         </NavLink>
 
+        {/* role ADMIN  */}
+        <NavLink
+          to="/admin/all-classes"
+          className={({ isActive }) => getNavLinkClass(isActive)}
+        >
+          <IoLibraryOutline size={20} />
+          <div>All classes</div>
+        </NavLink>
+
         {/* role STUDENT  */}
         <NavLink
           to="/student/my-courses"
