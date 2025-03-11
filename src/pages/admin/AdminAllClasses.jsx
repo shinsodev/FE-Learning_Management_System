@@ -11,18 +11,23 @@ import {
   adminGetAllClasses,
   adminAddClass,
   adminDeleteClass,
+  adminUpdateClass,
+  adminGetClassById,
 } from "../../services/ClassServices";
 
 // Components
 import Loading from "../../components/Loading/Loading";
 import AddClassForm from "../../components/admin/AddClassForm";
+import UpdateClassForm from "../../components/admin/UpdateClassForm";
 
 const AdminAllClasses = () => {
   const [classData, setClassData] = useState([]);
+  const [selectedClass, setSelectedClass] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
 
   useEffect(() => {
     fetchClassData();
@@ -73,15 +78,54 @@ const AdminAllClasses = () => {
     }
   };
 
+  const handleGetClassData = async (id) => {
+    try {
+      const response = await adminGetClassById(id);
+      if (response?.data?.statusCode === 200) {
+        console.log(response);
+        setSelectedClass(response.data.classDTO);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUpdateClass = async (curClass) => {
+    setIsLoading(true);
+    try {
+      const response = await adminUpdateClass(
+        curClass.id,
+        curClass.name,
+        curClass.subjectId,
+        curClass.semester,
+        curClass.startTime,
+        curClass.endTime,
+        curClass.daysOfWeek,
+        // curClass.lecturersUsernameList
+        []
+      );
+
+      if (response?.data?.statusCode === 200) {
+        toast.success(response.data.message);
+        fetchClassData();
+      }
+
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleDeleteClass = async (id) => {
     setIsLoading(true);
     try {
-      console.log(id);
-      // const response = await adminDeleteClass(id);
-      // if (response?.data?.statusCode === 200) {
-      //   toast.success(response.data.message);
-      //   fetchClassData();
-      // }
+      const response = await adminDeleteClass(id);
+      if (response?.data?.statusCode === 200) {
+        toast.success(response.data.message);
+        fetchClassData();
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -101,16 +145,16 @@ const AdminAllClasses = () => {
 
       {/* Button open add class form */}
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsModalAddOpen(true)}
         className="mt-4 mb-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition flex items-center justify-center space-x-2"
       >
-        <IoMdAddCircle size={20} /> <div>Add Class</div>
+        <IoMdAddCircle size={20} /> <div className="font-medium">Add Class</div>
       </button>
 
       {/* Show add class form */}
       <AddClassForm
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isModalAddOpen}
+        onClose={() => setIsModalAddOpen(false)}
         onSubmit={handleAddClass}
       />
       <div className="overflow-x-auto">
@@ -156,6 +200,9 @@ const AdminAllClasses = () => {
                   <HiMiniPencilSquare
                     size={20}
                     className="text-yellow-500 hover:text-yellow-700 hover:cursor-pointer"
+                    onClick={() => {
+                      handleGetClassData(item.id), setIsModalUpdateOpen(true);
+                    }}
                   />
                   <MdDelete
                     size={22}
@@ -168,6 +215,14 @@ const AdminAllClasses = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Show update class form */}
+      <UpdateClassForm
+        isOpen={isModalUpdateOpen}
+        onClose={() => setIsModalUpdateOpen(false)}
+        onSubmit={handleUpdateClass}
+        selectedClass={selectedClass}
+      />
 
       <ReactPaginate
         breakLabel="..."

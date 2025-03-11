@@ -24,7 +24,7 @@ export async function adminAddClass(
   semester,
   startTime,
   endTime,
-  daysOfWeek
+  dayOfWeek
 ) {
   try {
     const token = localStorage.getItem("token");
@@ -36,7 +36,7 @@ export async function adminAddClass(
         semester,
         startTime,
         endTime,
-        daysOfWeek,
+        dayOfWeek,
       },
       {
         headers: {
@@ -59,6 +59,57 @@ export async function adminDeleteClass(id) {
       },
     });
 
+    return res;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+}
+
+export async function adminUpdateClass(
+  id,
+  name,
+  subjectId,
+  semester,
+  startTime,
+  endTime,
+  dayOfWeek,
+  lecturersUsernameList
+) {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.put(
+      "/classes/update",
+      {
+        id,
+        name,
+        subjectId,
+        semester,
+        startTime,
+        endTime,
+        dayOfWeek,
+        lecturersUsernameList,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+}
+
+export async function adminGetClassById(id) {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.get(`/classes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res);
     return res;
   } catch (error) {
     toast.error(error?.response?.data?.message);
