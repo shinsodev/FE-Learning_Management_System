@@ -16,11 +16,19 @@ import SignUp from "./pages/SignUp/SignUp";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
+import Profile from "./pages/Profile/Profile";
+
 // Admin
 import AdminAllClasses from "./pages/admin/AdminAllClasses";
+import AdminCreateAdminLecturer from "./pages/admin/AdminCreateAdminLecturer";
 
 // Student
-import StudentCourses from "./pages/StudentCourses/StudentCourses";
+import StudentAllClasses from "./pages/student/StudentAllClasses";
+import StudentGrades from "./pages/student/StudentGrades";
+
+// Lecturer
+import LecturerAllClasses from "./pages/lecturer/LecturerAllClasses";
+import LecturerGrades from "./pages/lecturer/LecturerGrades";
 
 import Dashboard from "./pages/Dashboard/Dashboard";
 function App() {
@@ -53,12 +61,59 @@ function App() {
           }
         />
 
-        {/* Student routes  */}
         <Route
-          path="/student/my-courses"
+          path="/admin/create-admin-lecturer"
           element={
             <SidebarLayout>
-              <StudentCourses />
+              <AdminCreateAdminLecturer />
+            </SidebarLayout>
+          }
+        />
+
+        {/* Student routes  */}
+        <Route
+          path="/student/all-classes"
+          element={
+            <SidebarLayout>
+              <StudentAllClasses />
+            </SidebarLayout>
+          }
+        />
+
+        <Route
+          path="/student/grade"
+          element={
+            <SidebarLayout>
+              <StudentGrades />
+            </SidebarLayout>
+          }
+        />
+
+        {/* Lecturer routes  */}
+        <Route
+          path="/lecturer/all-classes"
+          element={
+            <SidebarLayout>
+              <LecturerAllClasses />
+            </SidebarLayout>
+          }
+        />
+
+        <Route
+          path="/lecturer/grade"
+          element={
+            <SidebarLayout>
+              <LecturerGrades />
+            </SidebarLayout>
+          }
+        />
+
+        {/* Global  */}
+        <Route
+          path="/settings"
+          element={
+            <SidebarLayout>
+              <Profile />
             </SidebarLayout>
           }
         />

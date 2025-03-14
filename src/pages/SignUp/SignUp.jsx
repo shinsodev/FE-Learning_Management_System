@@ -50,7 +50,7 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
@@ -92,7 +92,7 @@ const SignUp = () => {
           </p>
 
           {/* Form */}
-          <form className="flex flex-col gap-4 w-full" onSubmit={handleLogin}>
+          <form className="flex flex-col gap-4 w-full" onSubmit={handleSignup}>
             <input
               className="p-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition"
               name="username"

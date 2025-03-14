@@ -7,6 +7,9 @@ import { toast } from "react-toastify";
 import Logo from "../../assets/images/logo.png";
 import GoogleImg from "../../assets/images/google.svg";
 
+// Context
+import { useAuth } from "../../context/AuthContext";
+
 // Component
 import Loading from "../../components/Loading/Loading";
 
@@ -20,6 +23,8 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { fetchUserInfo } = useAuth();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -28,6 +33,8 @@ const Login = () => {
 
       if (response?.data?.statusCode === 200) {
         localStorage.setItem("token", response.data.token);
+        // setToken(response.data.token);
+        fetchUserInfo(response.data.token);
         toast.success(response.data.message);
         navigate("/");
       }

@@ -116,7 +116,8 @@ export async function adminGetClassById(id) {
   }
 }
 
-export async function getStudentCourses(page) {
+// STUDENT
+export async function studentGetAllClasses(page) {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.get("/classes/all-student", {
@@ -125,7 +126,24 @@ export async function getStudentCourses(page) {
       },
       params: { page },
     });
+    console.log(res);
+    return res;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+}
 
+// LECTURER
+export async function lecturerGetAllClasses(page) {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.get("/classes/all-lecturer", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { page },
+    });
+    console.log(res);
     return res;
   } catch (error) {
     toast.error(error?.response?.data?.message);

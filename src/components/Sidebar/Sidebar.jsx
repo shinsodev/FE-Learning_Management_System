@@ -3,8 +3,14 @@ import Logo from "../../assets/images/logo.png";
 import { IoSettingsOutline } from "react-icons/io5";
 import { GoHome } from "react-icons/go";
 import { IoLibraryOutline } from "react-icons/io5";
+import { FaUserGraduate } from "react-icons/fa";
+import { IoIosAddCircleOutline } from "react-icons/io";
+
+import { useAuth } from "../../context/AuthContext";
 
 const Sidebar = () => {
+  const { user } = useAuth();
+
   const getNavLinkClass = (isActive) =>
     `py-2 hover:bg-white hover:text-[#034F75] rounded-full transition-all w-full flex flex-row space-x-2 items-center justify-center
     ${isActive ? "bg-white text-[#034F75]" : ""}`;
@@ -33,29 +39,67 @@ const Sidebar = () => {
         </NavLink>
 
         {/* role ADMIN  */}
-        <NavLink
-          to="/admin/all-classes"
-          className={({ isActive }) => getNavLinkClass(isActive)}
-        >
-          <IoLibraryOutline size={20} />
-          <div>All classes</div>
-        </NavLink>
+        {user?.userDTO.role === "ADMIN" && (
+          <>
+            <NavLink
+              to="/admin/all-classes"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <IoLibraryOutline size={20} />
+              <div>All classes</div>
+            </NavLink>
+
+            <NavLink
+              to="/admin/create-admin-lecturer"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <IoIosAddCircleOutline size={20} />
+              <div>All classes</div>
+            </NavLink>
+          </>
+        )}
 
         {/* role STUDENT  */}
-        <NavLink
-          to="/student/my-courses"
-          className={({ isActive }) => getNavLinkClass(isActive)}
-        >
-          <IoLibraryOutline size={20} />
-          <div>My courses</div>
-        </NavLink>
+        {user?.userDTO.role === "STUDENT" && (
+          <>
+            <NavLink
+              to="/student/all-classes"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <IoLibraryOutline size={20} />
+              <div>All classes</div>
+            </NavLink>
 
-        <NavLink
-          to="/student/grade"
-          className={({ isActive }) => getNavLinkClass(isActive)}
-        >
-          Grade
-        </NavLink>
+            <NavLink
+              to="/student/grade"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <FaUserGraduate size={20} />
+              <div>Grade</div>
+            </NavLink>
+          </>
+        )}
+
+        {user?.userDTO.role === "LECTURER" && (
+          <>
+            <NavLink
+              to="/lecturer/all-classes"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <IoLibraryOutline size={20} />
+              <div>All classes</div>
+            </NavLink>
+
+            <NavLink
+              to="/lecturer/grade"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <FaUserGraduate size={20} />
+              <div>Grade</div>
+            </NavLink>
+          </>
+        )}
+
         <NavLink
           to="/notifications"
           className={({ isActive }) => getNavLinkClass(isActive)}
