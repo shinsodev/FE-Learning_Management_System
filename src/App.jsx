@@ -21,6 +21,7 @@ import Profile from "./pages/Profile/Profile";
 // Admin
 import AdminAllClasses from "./pages/admin/AdminAllClasses";
 import AdminCreateAdminLecturer from "./pages/admin/AdminCreateAdminLecturer";
+import AdminListUsers from "./pages/admin/AdminListUsers";
 
 // Student
 import StudentAllClasses from "./pages/student/StudentAllClasses";
@@ -66,6 +67,15 @@ function App() {
           element={
             <SidebarLayout>
               <AdminCreateAdminLecturer />
+            </SidebarLayout>
+          }
+        />
+
+        <Route
+          path="/admin/list-users"
+          element={
+            <SidebarLayout>
+              <AdminListUsers />
             </SidebarLayout>
           }
         />

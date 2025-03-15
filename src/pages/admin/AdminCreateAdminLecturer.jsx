@@ -12,6 +12,7 @@ const AdminCreateAdminLecturer = () => {
     username: "",
     password: "",
     name: "",
+    faculty: "",
     role: "ADMIN",
   });
 
@@ -37,7 +38,8 @@ const AdminCreateAdminLecturer = () => {
         response = await adminCreateLecturer(
           formData.username,
           formData.password,
-          formData.name
+          formData.name,
+          formData.faculty
         );
       }
 
@@ -101,6 +103,21 @@ const AdminCreateAdminLecturer = () => {
             required
           />
         </div>
+
+        {/* Faculty  */}
+        {formData.role === "LECTURER" && (
+          <div>
+            <label className="block font-medium">Faculty</label>
+            <input
+              type="text"
+              name="faculty"
+              value={formData.faculty}
+              onChange={handleChange}
+              className="w-full p-2 border rounded-md"
+              required
+            />
+          </div>
+        )}
 
         <div>
           <label className="block font-medium">Role</label>

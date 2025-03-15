@@ -10,7 +10,6 @@ import Loading from "../../components/Loading/Loading";
 
 const StudentAllClasses = () => {
   const [classData, setClassData] = useState([]);
-
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -35,7 +34,6 @@ const StudentAllClasses = () => {
   };
 
   const handlePageClick = (event) => {
-    console.log(event.selected);
     setPage(event.selected);
   };
 
@@ -44,76 +42,69 @@ const StudentAllClasses = () => {
     return <p className="text-gray-500 text-center mt-4">No data available</p>;
 
   return (
-    <div className="mt-8 font-sans">
-      {/* <h2 className="font-bold text-2xl text-gray-800 mb-4">
-        Class Information
-      </h2> */}
-
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
-          <thead>
-            <tr className="bg-slate-500 text-white text-left">
-              <th className="py-3 px-4">#</th>
-              <th className="py-3 px-4">Subject ID</th>
-              <th className="py-3 px-4">Name</th>
-              <th className="py-3 px-4">Semester</th>
-              <th className="py-3 px-4">Start Time</th>
-              <th className="py-3 px-4">End Time</th>
-              <th className="py-3 px-4">Lecturers</th>
-              <th className="py-3 px-4">Days</th>
-              {/* <th className="py-3 px-4">Actions</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {classData.map((item, index) => (
-              <tr
-                key={index}
-                className={`border-b ${
-                  index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                } hover:bg-gray-200 transition-all`}
-              >
-                <td className="py-3 px-4">{index + 1}</td>
-                <td className="py-3 px-4">{item.subjectId}</td>
-                <td className="py-3 px-4">{item.name}</td>
-                <td className="py-3 px-4">{item.semester}</td>
-                <td className="py-3 px-4">{item.startTime}</td>
-                <td className="py-3 px-4">{item.endTime}</td>
-                <td className="py-3 px-4">
-                  {item.lecturersUsernameList?.length > 0
-                    ? item.lecturersUsernameList.join(", ")
-                    : "No lecturers assigned"}
-                </td>
-                <td className="py-3 px-4">
-                  {item.dayOfWeek?.length > 0
-                    ? item.dayOfWeek.join(", ")
-                    : "No schedule"}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="mt-8 font-sans p-6 w-full mx-auto bg-white shadow-lg rounded-xl border border-gray-300">
+      <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-800">
+        📚 <span className="text-gray-700">Class Information</span>
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {classData.map((item, index) => (
+          <div
+            key={index}
+            className="border rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
+          >
+            <h3 className="text-lg font-bold text-white bg-blue-500 w-full p-4 rounded-t-lg">
+              {item.subjectId} - {item.name}
+            </h3>
+            <div className="p-5">
+              {/* <p className="text-gray-700">
+                <strong className="text-gray-700">📌 Subject ID:</strong>{" "}
+                {item.subjectId}
+              </p> */}
+              <p className="text-gray-700">
+                <strong className="text-gray-700">📅 Semester:</strong>{" "}
+                {item.semester}
+              </p>
+              <p className="text-gray-700">
+                <strong className="text-gray-700">🕒 Start Time:</strong>{" "}
+                {item.startTime}
+              </p>
+              <p className="text-gray-700">
+                <strong className="text-gray-700">🕒 End Time:</strong>{" "}
+                {item.endTime}
+              </p>
+              <p className="text-gray-700">
+                <strong className="text-gray-700">👨‍🏫 Lecturers:</strong>{" "}
+                {item.lecturersUsernameList?.length > 0 ? (
+                  item.lecturersUsernameList.join(", ")
+                ) : (
+                  <span className="text-red-600">No lecturers assigned</span>
+                )}
+              </p>
+              <p className="text-gray-700">
+                <strong className="text-gray-700">📆 Days:</strong>{" "}
+                {item.dayOfWeek?.length > 0 ? (
+                  item.dayOfWeek.join(", ")
+                ) : (
+                  <span className="text-red-600">No schedule</span>
+                )}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
-
       <ReactPaginate
         breakLabel="..."
-        forcePage={page} //important to make sure the page is correct
+        forcePage={page}
         nextLabel="NEXT →"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={totalPages}
         previousLabel="← PREVIOUS"
         className="flex space-x-2 items-center justify-center my-8"
-        pageClassName="page-item"
         pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
-        activeLinkClassName="active bg-black text-white" // Active page style
-        previousClassName="page-item"
+        activeLinkClassName="active bg-black text-white"
         previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
-        nextClassName="page-item"
         nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
-        breakClassName="page-item"
-        breakLinkClassName="page-link"
-        disabledLinkClassName="text-gray-400 cursor-not-allowed"
-        containerClassName="pagination"
       />
     </div>
   );

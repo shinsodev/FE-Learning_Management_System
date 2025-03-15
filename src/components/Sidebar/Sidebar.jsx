@@ -5,6 +5,7 @@ import { GoHome } from "react-icons/go";
 import { IoLibraryOutline } from "react-icons/io5";
 import { FaUserGraduate } from "react-icons/fa";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { FaRegUser } from "react-icons/fa";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -54,7 +55,15 @@ const Sidebar = () => {
               className={({ isActive }) => getNavLinkClass(isActive)}
             >
               <IoIosAddCircleOutline size={20} />
-              <div>All classes</div>
+              <div>Create account</div>
+            </NavLink>
+
+            <NavLink
+              to="/admin/list-users"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <FaRegUser size={20} />
+              <div>List users</div>
             </NavLink>
           </>
         )}

@@ -24,7 +24,7 @@ export async function adminCreateAdmin(username, password, name) {
   }
 }
 
-export async function adminCreateLecturer(username, password, name) {
+export async function adminCreateLecturer(username, password, name, faculty) {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.post(
@@ -33,6 +33,7 @@ export async function adminCreateLecturer(username, password, name) {
         username,
         password,
         name,
+        faculty,
       },
       {
         headers: {
@@ -40,6 +41,34 @@ export async function adminCreateLecturer(username, password, name) {
         },
       }
     );
+    return res;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+}
+
+export async function adminGetListLecturers() {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.get("/users/lecturers", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+}
+
+export async function adminGetListStudents() {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.get("/users/students", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res;
   } catch (error) {
     toast.error(error?.response?.data?.message);
