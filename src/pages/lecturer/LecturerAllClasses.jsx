@@ -59,7 +59,7 @@ const LecturerAllClasses = () => {
               <th className="py-3 px-4">Semester</th>
               <th className="py-3 px-4">Start Time</th>
               <th className="py-3 px-4">End Time</th>
-              <th className="py-3 px-4">Lecturers</th>
+              {/* <th className="py-3 px-4">Lecturers</th> */}
               <th className="py-3 px-4">Days</th>
               {/* <th className="py-3 px-4">Actions</th> */}
             </tr>
@@ -78,11 +78,11 @@ const LecturerAllClasses = () => {
                 <td className="py-3 px-4">{item.semester}</td>
                 <td className="py-3 px-4">{item.startTime}</td>
                 <td className="py-3 px-4">{item.endTime}</td>
-                <td className="py-3 px-4">
+                {/* <td className="py-3 px-4">
                   {item.lecturersUsernameList?.length > 0
                     ? item.lecturersUsernameList.join(", ")
                     : "No lecturers assigned"}
-                </td>
+                </td> */}
                 <td className="py-3 px-4">
                   {item.dayOfWeek?.length > 0
                     ? item.dayOfWeek.join(", ")

@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 
-const UpdateClassForm = ({ isOpen, onClose, onSubmit, selectedClass }) => {
+const UpdateClassForm = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  selectedClass,
+  lecturers,
+}) => {
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -9,9 +15,9 @@ const UpdateClassForm = ({ isOpen, onClose, onSubmit, selectedClass }) => {
     startTime: "",
     endTime: "",
     daysOfWeek: [],
+    selectedLecturers: [],
   });
 
-  // Cập nhật state khi selectedClass thay đổi
   useEffect(() => {
     if (selectedClass) {
       setFormData({
@@ -21,7 +27,8 @@ const UpdateClassForm = ({ isOpen, onClose, onSubmit, selectedClass }) => {
         semester: selectedClass.semester || "",
         startTime: selectedClass.startTime || "",
         endTime: selectedClass.endTime || "",
-        daysOfWeek: selectedClass.dayOfWeek || [], // Tránh lỗi undefined.includes()
+        daysOfWeek: selectedClass.dayOfWeek || [],
+        selectedLecturers: selectedClass.lecturersUsername || [],
       });
     }
   }, [selectedClass]);
@@ -42,7 +49,9 @@ const UpdateClassForm = ({ isOpen, onClose, onSubmit, selectedClass }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
     onSubmit(formData);
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -161,6 +170,31 @@ const UpdateClassForm = ({ isOpen, onClose, onSubmit, selectedClass }) => {
                 )
               )}
             </div>
+          </div>
+
+          {/* Lecturer Selection */}
+          <div>
+            <label className="block text-gray-700">
+              Lecturers:
+              <select
+                name="selectedLecturers"
+                value={formData.selectedLecturers}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    selectedLecturers: [e.target.value],
+                  }))
+                }
+                className="w-full border p-2 rounded-md"
+              >
+                <option value="">Select Lecturer</option>
+                {lecturers.map((lecturer) => (
+                  <option key={lecturer} value={lecturer}>
+                    {lecturer}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
 
           {/* Submit Button */}

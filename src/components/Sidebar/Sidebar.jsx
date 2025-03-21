@@ -109,12 +109,12 @@ const Sidebar = () => {
           </>
         )}
 
-        <NavLink
+        {/* <NavLink
           to="/notifications"
           className={({ isActive }) => getNavLinkClass(isActive)}
         >
           Notifications
-        </NavLink>
+        </NavLink> */}
 
         <NavLink
           to="/settings"

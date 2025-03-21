@@ -6,6 +6,7 @@ import { CiSearch } from "react-icons/ci";
 import {
   lecturerGetStudyByClassId,
   lecturerAddGradesByExcel,
+  lecturerUpdateGradesByExcel,
 } from "../../services/StudyServices";
 import { RiFileExcel2Fill } from "react-icons/ri";
 
@@ -44,6 +45,12 @@ const LecturerGrades = () => {
     }
   };
 
+  const handleUpdateExcel = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -55,6 +62,28 @@ const LecturerGrades = () => {
       setIsLoading(true);
       const res = await lecturerAddGradesByExcel(formData);
       if (res.status === 200) {
+        fetchGrades();
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFileUpdateChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      setIsLoading(true);
+      const res = await lecturerUpdateGradesByExcel(formData);
+      if (res.status === 200) {
+        fetchGrades();
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -88,21 +117,39 @@ const LecturerGrades = () => {
             </button>
           </div>
 
-          {/* Add grades by excel */}
-          <button
-            className="bg-green-600 text-white font-medium text-[17px] p-2 rounded-lg hover:bg-green-700 transition-all flex items-center justify-center space-x-2"
-            onClick={handleAddExcel}
-          >
-            <RiFileExcel2Fill size={20} />
-            <div>Add grades</div>
-          </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            accept=".xlsx, .xls"
-            onChange={handleFileChange}
-          />
+          <div className="flex space-x-4">
+            {/* Add grades by excel */}
+            <button
+              className="bg-green-600 text-white font-medium text-[17px] p-2 rounded-lg hover:bg-green-700 transition-all flex items-center justify-center space-x-2"
+              onClick={handleAddExcel}
+            >
+              <RiFileExcel2Fill size={20} />
+              <div>Add grades</div>
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept=".xlsx, .xls"
+              onChange={handleFileChange}
+            />
+
+            {/* Update grades by excel */}
+            <button
+              className="bg-yellow-600 text-white font-medium text-[17px] p-2 rounded-lg hover:bg-yellow-700 transition-all flex items-center justify-center space-x-2"
+              onClick={handleUpdateExcel}
+            >
+              <RiFileExcel2Fill size={20} />
+              <div>Update grades</div>
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept=".xlsx, .xls"
+              onChange={handleFileUpdateChange}
+            />
+          </div>
         </div>
       </div>
       {data?.length === 0 && (
@@ -116,6 +163,36 @@ const LecturerGrades = () => {
               <p className="text-gray-600">Student ID: {study.studentId}</p>
               <p className="text-gray-600">Class: {study.classId}</p>
               <p className="text-gray-600">Score: {study.score}</p>
+
+              <div className="mt-3">
+                <h3 className="font-semibold mb-2">Grades</h3>
+                <table className="w-full border-collapse border border-gray-300">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      <th className="border p-2">Type</th>
+                      <th className="border p-2">Score</th>
+                      <th className="border p-2">Weight</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {study.gradeList.map((grade) => (
+                      <tr key={grade.id} className="text-center">
+                        <td className="border p-2">
+                          {grade.weight === 20
+                            ? "Exam"
+                            : grade.weight === 30
+                            ? "Midterm"
+                            : "Final"}
+                        </td>
+                        <td className="border p-2 font-semibold">
+                          {grade.score}
+                        </td>
+                        <td className="border p-2">{grade.weight}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           ))}
         </div>

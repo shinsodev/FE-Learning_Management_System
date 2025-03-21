@@ -31,3 +31,19 @@ export async function lecturerAddGradesByExcel(formData) {
     toast.error(error?.response?.data?.message);
   }
 }
+
+export async function lecturerUpdateGradesByExcel(formData) {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.post("/grades/update_excel", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return res;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+}

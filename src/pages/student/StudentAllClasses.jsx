@@ -50,7 +50,7 @@ const StudentAllClasses = () => {
         {classData.map((item, index) => (
           <div
             key={index}
-            className="border rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
+            className="border rounded-lg shadow-xl hover:shadow-2xl transition duration-300"
           >
             <h3 className="text-lg font-bold text-white bg-blue-500 w-full p-4 rounded-t-lg">
               {item.subjectId} - {item.name}

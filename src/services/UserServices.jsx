@@ -74,3 +74,17 @@ export async function adminGetListStudents() {
     toast.error(error?.response?.data?.message);
   }
 }
+
+export async function adminGetListLecturerUsername() {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.get("/users/lecturers-username", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+}

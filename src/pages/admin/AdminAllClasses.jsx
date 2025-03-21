@@ -15,6 +15,8 @@ import {
   adminGetClassById,
 } from "../../services/ClassServices";
 
+import { adminGetListLecturerUsername } from "../../services/UserServices";
+
 // Components
 import Loading from "../../components/Loading/Loading";
 import AddClassForm from "../../components/admin/AddClassForm";
@@ -28,6 +30,8 @@ const AdminAllClasses = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
+
+  const [lecturers, setLecturers] = useState([]);
 
   useEffect(() => {
     fetchClassData();
@@ -51,6 +55,18 @@ const AdminAllClasses = () => {
   const handlePageClick = (event) => {
     console.log(event.selected);
     setPage(event.selected);
+  };
+
+  const handleGetListLecturerUsername = async () => {
+    try {
+      const res = await adminGetListLecturerUsername();
+      console.log(res);
+      if (res.status === 200) {
+        setLecturers(res.data.lecturersUsername);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleAddClass = async (newClass) => {
@@ -93,6 +109,7 @@ const AdminAllClasses = () => {
   const handleUpdateClass = async (curClass) => {
     setIsLoading(true);
     try {
+      console.log(curClass.selectedLecturers);
       const response = await adminUpdateClass(
         curClass.id,
         curClass.name,
@@ -101,8 +118,7 @@ const AdminAllClasses = () => {
         curClass.startTime,
         curClass.endTime,
         curClass.daysOfWeek,
-        // curClass.lecturersUsernameList
-        []
+        curClass.selectedLecturers
       );
 
       if (response?.data?.statusCode === 200) {
@@ -187,9 +203,11 @@ const AdminAllClasses = () => {
                 <td className="py-3 px-4">{item.startTime}</td>
                 <td className="py-3 px-4">{item.endTime}</td>
                 <td className="py-3 px-4">
-                  {item.lecturersUsernameList?.length > 0
+                  {/* {item.lecturersUsernameList?.length > 0
                     ? item.lecturersUsernameList.join(", ")
-                    : "No lecturers assigned"}
+                    : "No lecturers assigned"} */}
+
+                  {item.lecturersUsername}
                 </td>
                 <td className="py-3 px-4">
                   {item.dayOfWeek?.length > 0
@@ -201,7 +219,9 @@ const AdminAllClasses = () => {
                     size={20}
                     className="text-yellow-500 hover:text-yellow-700 hover:cursor-pointer"
                     onClick={() => {
-                      handleGetClassData(item.id), setIsModalUpdateOpen(true);
+                      handleGetClassData(item.id),
+                        handleGetListLecturerUsername(),
+                        setIsModalUpdateOpen(true);
                     }}
                   />
                   <MdDelete
@@ -222,6 +242,7 @@ const AdminAllClasses = () => {
         onClose={() => setIsModalUpdateOpen(false)}
         onSubmit={handleUpdateClass}
         selectedClass={selectedClass}
+        lecturers={lecturers}
       />
 
       <ReactPaginate
